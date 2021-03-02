@@ -7,7 +7,7 @@ interface Challenge {
     amount: number
 }
 
-interface ChallengesContextData{
+interface ChallengesContextData {
     level: number
     currentExperience: number
     challengesCompleted: number
@@ -15,52 +15,52 @@ interface ChallengesContextData{
     activeChallenge: Challenge
     levelUp: () => void
     startNewChallenge: () => void
-    resetChallenge:() => void
+    resetChallenge: () => void
     completeChallenge: () => void
 }
 
-interface ChallengesProviderProps{
+interface ChallengesProviderProps {
     children: ReactNode
 }
 
 export const ChallengesContext = createContext({} as ChallengesContextData)
 
 
-export function ChallengesProvider({ children }:ChallengesProviderProps) {
+export function ChallengesProvider({ children }: ChallengesProviderProps) {
 
     const [level, setLevel] = useState(1)
     const [currentExperience, setCurrentExperience] = useState(0)
     const [challengesCompleted, setChallengesCompleted] = useState(0)
-    
+
     const [activeChallenge, setActiveChallenge] = useState(null)
 
-    const experienceToNextLevel = Math.pow((level + 1)* 4, 2)
+    const experienceToNextLevel = Math.pow((level + 1) * 4, 2)
 
     function levelUp() {
         setLevel(level + 1)
     }
 
-    function startNewChallenge(){
-       const randonChallengeIndex = Math.floor(Math.random() * challenges.length)
-       const challenge = challenges[randonChallengeIndex]
+    function startNewChallenge() {
+        const randonChallengeIndex = Math.floor(Math.random() * challenges.length)
+        const challenge = challenges[randonChallengeIndex]
 
-       setActiveChallenge(challenge)
+        setActiveChallenge(challenge)
     }
 
-    function resetChallenge(){
+    function resetChallenge() {
         setActiveChallenge(null)
     }
 
-    function completeChallenge(){
-        if(!setActiveChallenge){
-          return; 
+    function completeChallenge() {
+        if (!setActiveChallenge) {
+            return;
         }
 
         const { amount } = activeChallenge
 
         let finalExperience = currentExperience + amount
 
-        if(finalExperience >= experienceToNextLevel){
+        if (finalExperience >= experienceToNextLevel) {
             finalExperience = finalExperience - experienceToNextLevel
             levelUp()
         }
@@ -70,20 +70,20 @@ export function ChallengesProvider({ children }:ChallengesProviderProps) {
     }
 
     return (
-       <ChallengesContext.Provider
-        value={{ 
-            level, 
-            currentExperience, 
-            challengesCompleted, 
-            levelUp,
-            startNewChallenge,
-            activeChallenge,
-            resetChallenge,
-            experienceToNextLevel,
-            completeChallenge,
+        <ChallengesContext.Provider
+            value={{
+                level,
+                currentExperience,
+                challengesCompleted,
+                levelUp,
+                startNewChallenge,
+                activeChallenge,
+                resetChallenge,
+                experienceToNextLevel,
+                completeChallenge,
             }}>
-         {children} 
-       </ChallengesContext.Provider>
+            {children}
+        </ChallengesContext.Provider>
 
     );
 }
